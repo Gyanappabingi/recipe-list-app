@@ -175,9 +175,41 @@ textarea {
     border: 1px solid rgba(148, 163, 184, 0.08);
 }
 
+.recipe-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
 .recipe-card h3 {
     margin: 0;
     font-size: 1.1rem;
+    flex: 1;
+}
+
+.star-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--muted);
+    padding: 4px 8px;
+    transition: color 0.2s ease, transform 0.2s ease;
+    line-height: 1;
+}
+
+.star-btn:hover {
+    color: var(--accent);
+    transform: scale(1.2);
+}
+
+.star-btn.favorite {
+    color: #fbbf24;
+}
+
+.star-btn.favorite:hover {
+    color: #f59e0b;
 }
 
 .recipe-card p {

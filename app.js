@@ -7,15 +7,18 @@ const recipeCount = document.getElementById('recipe-count');
 const initialRecipes = [
     {
         name: 'Lemon Tart',
-        description: 'A crisp shell filled with tangy lemon curd and a dusting of powdered sugar.'
+        description: 'A crisp shell filled with tangy lemon curd and a dusting of powdered sugar.',
+        favorite: false
     },
     {
         name: 'Caprese Salad',
-        description: 'Fresh tomatoes, mozzarella, basil, and a drizzle of balsamic glaze.'
+        description: 'Fresh tomatoes, mozzarella, basil, and a drizzle of balsamic glaze.',
+        favorite: false
     },
     {
         name: 'Coconut Curry',
-        description: 'A creamy coconut curry with vegetables, ginger, and warm spices.'
+        description: 'A creamy coconut curry with vegetables, ginger, and warm spices.',
+        favorite: false
     }
 ];
 
@@ -26,12 +29,25 @@ function updateRecipeCount() {
     recipeCount.textContent = `${count} recipe${count === 1 ? '' : 's'}`;
 }
 
-function createRecipeCard(recipe, index) {
+function createRecipeCard(recipe, originalIndex) {
     const listItem = document.createElement('li');
     listItem.className = 'recipe-card';
 
+    const header = document.createElement('div');
+    header.className = 'recipe-header';
+
     const title = document.createElement('h3');
     title.textContent = recipe.name;
+
+    const starButton = document.createElement('button');
+    starButton.type = 'button';
+    starButton.className = 'star-btn';
+    starButton.setAttribute('aria-label', recipe.favorite ? 'Remove from favorites' : 'Add to favorites');
+    starButton.innerHTML = recipe.favorite ? '★' : '☆';
+    starButton.classList.toggle('favorite', recipe.favorite);
+    starButton.addEventListener('click', () => toggleFavorite(originalIndex));
+
+    header.append(title, starButton);
 
     const description = document.createElement('p');
     description.textContent = recipe.description;
@@ -40,24 +56,35 @@ function createRecipeCard(recipe, index) {
     meta.className = 'recipe-meta';
 
     const created = document.createElement('span');
-    created.textContent = `Recipe #${index + 1}`;
+    created.textContent = `Recipe #${originalIndex + 1}`;
     created.style.color = 'var(--muted)';
 
     const deleteButton = document.createElement('button');
     deleteButton.type = 'button';
     deleteButton.className = 'delete-btn';
     deleteButton.textContent = 'Delete';
-    deleteButton.addEventListener('click', () => removeRecipe(index));
+    deleteButton.addEventListener('click', () => removeRecipe(originalIndex));
 
     meta.append(created, deleteButton);
-    listItem.append(title, description, meta);
+    listItem.append(header, description, meta);
 
     return listItem;
 }
 
 function renderRecipes() {
     recipeList.innerHTML = '';
-    recipes.forEach((recipe, index) => {
+    
+    // Create array with original indices
+    const sortedRecipes = recipes.map((recipe, index) => ({ recipe, index }));
+    
+    // Sort so favorites appear first
+    sortedRecipes.sort((a, b) => {
+        if (a.recipe.favorite === b.recipe.favorite) return a.index - b.index;
+        return b.recipe.favorite ? 1 : -1;
+    });
+    
+    // Render sorted recipes
+    sortedRecipes.forEach(({ recipe, index }) => {
         recipeList.appendChild(createRecipeCard(recipe, index));
     });
     updateRecipeCount();
@@ -68,11 +95,18 @@ function removeRecipe(index) {
     renderRecipes();
 }
 
+function toggleFavorite(index) {
+    if (recipes[index]) {
+        recipes[index].favorite = !recipes[index].favorite;
+        renderRecipes();
+    }
+}
+
 recipeForm.addEventListener('submit', event => {
     event.preventDefault();
 
     const name = nameInput.value.trim();
-    const description = descriptionInput.value.trim();
+    const description = des, favorite: falsecriptionInput.value.trim();
 
     if (!name || !description) {
         return;
