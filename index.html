@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe List App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="app-shell">
+        <section class="hero">
+            <div>
+                <p class="eyebrow">Recipe Organizer</p>
+                <h1>Build your favorite recipe list</h1>
+                <p class="subtitle">Add recipes with a name and description, then manage them with one click.</p>
+            </div>
+        </section>
+
+        <section class="panel">
+            <form id="recipe-form" class="recipe-form">
+                <div class="field-row">
+                    <label for="recipe-name">Recipe Name</label>
+                    <input id="recipe-name" type="text" placeholder="e.g. Lemon Tart" required>
+                </div>
+                <div class="field-row">
+                    <label for="recipe-description">Description</label>
+                    <textarea id="recipe-description" rows="3" placeholder="Short description of the recipe" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Recipe</button>
+            </form>
+
+            <div class="list-panel">
+                <div class="list-header">
+                    <h2>Saved recipes</h2>
+                    <p id="recipe-count">0 recipes</p>
+                </div>
+                <ul id="recipe-list" class="recipe-list"></ul>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
